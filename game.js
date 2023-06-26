@@ -28,6 +28,16 @@ function updateGame() {
     gamePieces.update();
 }
 
+function openDialog(dialogContent) {
+    document.getElementById("dialog").showModal()
+    document.getElementById("dialogContent").innerText = dialogContent
+}
+function resetGame() {
+    gameInterval = setInterval(updateGame, 200)
+    gamePieces.reset()
+    document.getElementById("dialog").close()
+}
+
 const playerCharacter = {
     x: 0,
     y: 0,
@@ -110,6 +120,10 @@ class GamePiece {
 
 const gamePieces = {
     storage: [],
+    reset: function(){
+        this.storage = []
+        this.create()
+    },
     create: function () {
         const gamePiece = new GamePiece();
         draw(gamePiece.x, gamePiece.y, gamePiece.color);
@@ -139,6 +153,7 @@ const gamePieces = {
                 //korrektur pC-20
                 if (!(gamePiece.x < playerCharacter.x - 20 || gamePiece.x > (playerCharacter.x + 20))) {
                     clearInterval(gameInterval);
+                    openDialog("Game Over")
                 }
             }
         })
