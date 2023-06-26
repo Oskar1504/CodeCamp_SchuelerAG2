@@ -14,6 +14,7 @@ function draw(coordinateX, coordinateY, color) {
 const spriteWidth = 16;
 const spriteHeight = 18;
 const frameLoop = [0, 1, 0, 2];
+let points = 0
 
 function drawSprite(img, spriteX, spriteY, coordinateX, coordinateY) {
     const ctx = context;
@@ -33,6 +34,7 @@ function openDialog(dialogContent) {
     document.getElementById("dialogContent").innerText = dialogContent
 }
 function resetGame() {
+    points = 0
     gameInterval = setInterval(updateGame, 200)
     gamePieces.reset()
     document.getElementById("dialog").close()
@@ -134,6 +136,7 @@ const gamePieces = {
             gamePiece.y += 20;
             if (gamePiece.y > canvas.width) {
                 this.storage.shift();
+                points++
             }
         })
         this.drawGamePieces();
@@ -145,6 +148,7 @@ const gamePieces = {
     drawGamePieces: function () {
         this.storage.forEach(gamePiece => {
             draw(gamePiece.x, gamePiece.y, gamePiece.color);
+
         })
     },
     checkCollission: function () {
@@ -153,7 +157,8 @@ const gamePieces = {
                 //korrektur pC-20
                 if (!(gamePiece.x < playerCharacter.x - 20 || gamePiece.x > (playerCharacter.x + 20))) {
                     clearInterval(gameInterval);
-                    openDialog("Game Over")
+                    openDialog("Game Over\n\npoints: "+ points)
+                    
                 }
             }
         })
